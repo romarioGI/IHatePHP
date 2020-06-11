@@ -30,7 +30,7 @@ export default function Table({ tableName, rows, searchParams, onDelete, onUpdat
     onUpdate(row);
   }
 
-  return (
+  return (rows.length !== 0)? (
     <table className="table">
       <thead>
         <tr>
@@ -59,5 +59,5 @@ export default function Table({ tableName, rows, searchParams, onDelete, onUpdat
           ))}
       </tbody>
     </table>
-  );
+  ): (<div>Ничего не найдено</div>);
 }

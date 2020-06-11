@@ -24,16 +24,20 @@ export async function getRows(tableName, searchParams) {
 }
 
 export async function getRowsWithCondition(tableName, searchParams, state) {
-  const columns = searchParams.join();
+  const columns = searchParams.join('], [');
   const notEmptyFields = Object.keys(state).filter((key) => state[key] !== "");
   let condition = "";
 
   notEmptyFields.forEach((element) => {
-    condition += `${element} ${state[element]} AND `;
+    condition += `[${element}] LIKE '%25${state[element]}%25' AND `;
   });
   condition = condition.slice(0, -4);
 
-  const query = `SELECT ${columns} FROM ${tableName} WHERE ${condition}`;
+  if(condition === undefined || condition.length == 0)
+    return [];
+
+  const query = `SELECT [${columns}] FROM ${tableName} WHERE ${condition}`;
+  
   console.log(query);
   const url = `${baseUrl}?query=${query}`;
   const response = await fetch(url);
@@ -46,7 +50,7 @@ export async function getRowsWithCondition(tableName, searchParams, state) {
 export async function insertRow(tableName, state) {
   let columns = "";
   let condition = "";
-  Object.keys(state).map((key) => (columns += `${key},`));
+  Object.keys(state).map((key) => (columns += `[${key}],`));
   Object.keys(state).map((key) => (condition += `'${state[key]}',`));
   columns = columns.slice(0, -1);
   condition = condition.slice(0, -1);
@@ -64,12 +68,13 @@ export async function updateRow(tableName, state, updatedRow) {
 
   let columns = "";
   let condition = "";
-  Object.keys(state).map((key) => (columns += `${key}='${state[key]}',`));
+
+  Object.keys(state).map((key) => (columns += `[${key}] = '${state[key]}',`));
   Object.keys(updatedRow).map(
     (key) =>
       (condition += !updatedRow[key]
-        ? `(${key} IS NULL OR ${key}='') AND `
-        : `${key}='${updatedRow[key]}' AND `)
+        ? `([${key}] IS NULL OR [${key}] = '') AND `
+        : `[${key}] = '${updatedRow[key]}' AND `)
   );
   columns = columns.slice(0, -1);
   condition = condition.slice(0, -4);
@@ -82,6 +87,7 @@ export async function updateRow(tableName, state, updatedRow) {
   return responseResult;
 }
 
+//TODO
 export async function updateRowByProcedure(state, updatedRow) {
   const condition = `${updatedRow.Id_Кабинета}, ${state.Id_Кабинета}, ${state.Id_Кафедры},  ${state.Номер}, '${state.Тип}',  ${state.Количество_мест}`;
   const query = `EXEC EditCabinet ${condition}`;
@@ -94,7 +100,7 @@ export async function updateRowByProcedure(state, updatedRow) {
 
 export async function deleteRow(tableName, row) {
   let condition = "";
-  Object.keys(row).map((key) => (condition += `${key}='${row[key]}' AND `));
+  Object.keys(row).map((key) => (condition += `[${key}] = '${row[key]}' AND `));
   condition = condition.slice(0, -4);
 
   const query = `DELETE FROM ${tableName} WHERE ${condition}`;

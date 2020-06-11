@@ -160,14 +160,14 @@ export default function TableContainer({ tableName }) {
       <div className="table-container">
         {hasInsertPermission() && (
           <CreateForm params={insertParams} onInsert={handleInsert} />
-        )}
+        )}  
         {hasSearchPermission() && (
           <SearchForm
             params={searchParams}
             onSearch={handleSearch}
             onClear={handleClear}
           />
-        )}
+        )} 
         <Table
           tableName={tableName}
           rows={rows}
