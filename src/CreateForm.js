@@ -28,6 +28,7 @@ export default function CreateForm({ params, onInsert }) {
 
   return (
     <div className="form">
+      <h3>Добавление</h3>
       {params.map((param) => (
         <div className="input-group">
           <label>{param}</label>

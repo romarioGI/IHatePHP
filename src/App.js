@@ -13,24 +13,20 @@ export default function App() {
     setIsConnected(true);
   };
 
-  return (
+  return isConnected?(
     <div className="app">
-      <div className="appHeader">
-        <div>
-          {tables.map((table) => (
-            <div>
-              <a href={"#" + table}>{table}</a>
-            </div>
-          ))}
-        </div>
-        <ConnectForm onConnect={handleConnect} />
-      </div>
-      {isConnected &&
-        tables.map((table) => (
+      {tables.map((table) => (
           <div id={table} className="item">
             <TableContainer tableName={table} />
           </div>
         ))}
+    </div>
+  ):
+  (
+    <div className="app">
+      <div className="appHeader">
+        <ConnectForm onConnect={handleConnect} />
+      </div>
     </div>
   );
 }

@@ -30,6 +30,7 @@ export default function SearchForm({ params, onSearch, onClear }) {
 
   return (
     <div className="form">
+      <h3>Поиск</h3>
       {params.map((param) => (
         <div className="input-group">
           <label>{param}</label>
