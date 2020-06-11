@@ -6,3 +6,9 @@
 .item {
   margin-bottom: 50px;
 }
+
+.appHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

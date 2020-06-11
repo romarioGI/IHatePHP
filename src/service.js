@@ -1,5 +1,17 @@
 const baseUrl = "http://localhost:5050";
 
+export async function connect(credentials) {
+  const url = `${baseUrl}/connect`;
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials),
+    mode: "no-cors"
+  });
+}
+
 export async function getPermissions(tableName) {
   const query = `SELECT * FROM fn_my_permissions('${tableName}', 'object')`;
   const url = `${baseUrl}?query=${query}`;
