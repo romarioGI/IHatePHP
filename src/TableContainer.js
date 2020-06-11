@@ -158,16 +158,18 @@ export default function TableContainer({ tableName }) {
       )}
       <div className="table-title">{tableName}</div>
       <div className="table-container">
-        {hasInsertPermission() && (
-          <CreateForm params={insertParams} onInsert={handleInsert} />
-        )}  
-        {hasSearchPermission() && (
-          <SearchForm
-            params={searchParams}
-            onSearch={handleSearch}
-            onClear={handleClear}
-          />
-        )} 
+        <div>
+          {hasInsertPermission() && (
+            <CreateForm params={insertParams} onInsert={handleInsert} />
+          )}  
+          {hasSearchPermission() && (
+            <SearchForm
+              params={searchParams}
+              onSearch={handleSearch}
+              onClear={handleClear}
+            />
+          )} 
+        </div>
         <Table
           tableName={tableName}
           rows={rows}
