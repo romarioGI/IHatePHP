@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
-const dbConfig = {
+const sql = require("mssql");
+
+let dbConfig = {
   server: "MSI\\MSSQLSERVER01",
   database: "University",
   user: "Boss",
@@ -10,15 +12,26 @@ const dbConfig = {
     "enableArithAbort": true
   }
 };
+
 let isSuccess;
 
-app.get("/tables", async function (req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept");
+app.post("/connect", express.json({ type: "*/*" }), async function (req, res) {
+  dbConfig.user = req.body.user;
+  dbConfig.password = req.body.password;
 
-  const query = `SELECT TABLE_NAME FROM ${dbConfig.database}.INFORMATION_SCHEMA.TABLES`;
-  const result = await getData(query);
-  res.send(result);
+  try {
+    const pool = new sql.ConnectionPool(dbConfig);
+    const poolConnect = pool.connect();
+    await poolConnect;
+    pool.request();
+    res.send({
+      status: 200,
+    });
+  } catch (err) {
+    res.send({
+      status: 500,
+    });
+  }
 });
 
 app.get("/", async function (req, res) {
@@ -32,13 +45,16 @@ app.listen(5050, function () {
   console.log("Server is working!");
 });
 
-const sql = require("mssql");
 async function getData(query) {
+  console.log(query);
+  
+  const pool = new sql.ConnectionPool(dbConfig);
+  const poolConnect = pool.connect();
+
   try {
-    console.log(query);
-    await sql.connect(dbConfig);
-    const result = await sql.query(query);
-    isSuccess = true;
+    await poolConnect;
+    const request = pool.request();
+    const result = await request.query(query);
 
     return result;
   } catch (err) {
