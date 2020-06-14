@@ -4,16 +4,8 @@ const sql = require("mssql");
 
 let dbConfig = {
   server: "MSI\\MSSQLSERVER01",
-  database: "University",
-  user: "Boss",
-  password: "Boss",
-  "options": {
-    "encrypt": true,
-    "enableArithAbort": true
-  }
+  database: "University"
 };
-
-let isSuccess;
 
 app.post("/connect", express.json({ type: "*/*" }), async function (req, res) {
   dbConfig.user = req.body.user;
@@ -59,7 +51,6 @@ async function getData(query) {
     return result;
   } catch (err) {
     console.log(err);
-    isSuccess = false;
 
     if (err.precedingErrors.length)
       return {

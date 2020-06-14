@@ -76,7 +76,7 @@ export async function insertRow(tableName, state) {
 }
 
 export async function updateRow(tableName, state, updatedRow) {
-  if (tableName === "Кабинеты") return updateRowByProcedure(state, updatedRow);
+  if (tableName === "Клиент") return updateRowByProcedure(state, updatedRow);
 
   let columns = "";
   let condition = "";
@@ -99,10 +99,9 @@ export async function updateRow(tableName, state, updatedRow) {
   return responseResult;
 }
 
-//TODO
 export async function updateRowByProcedure(state, updatedRow) {
-  const condition = `${updatedRow.Id_Кабинета}, ${state.Id_Кабинета}, ${state.Id_Кафедры},  ${state.Номер}, '${state.Тип}',  ${state.Количество_мест}`;
-  const query = `EXEC EditCabinet ${condition}`;
+  const condition = `${updatedRow.Id}, ${state.Id}, ${state.ФИО}`;
+  const query = `EXEC EditClient ${condition}`;
   const url = `${baseUrl}?query=${query}`;
   const response = await fetch(url);
   const responseResult = await response.json();

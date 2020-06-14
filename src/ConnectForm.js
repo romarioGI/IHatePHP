@@ -16,7 +16,6 @@ export default function ConnectForm({ onConnect }) {
   const handleConnect = async () => {
     await connect(credentials);
     onConnect();
-    setState(`Подключен как ${credentials.user}`);
 
     setCredentials({
         user: "",
