@@ -9,7 +9,7 @@
     "cross-blob": "^1.2.2",
     "msnodesqlv8": "^1.1.2",
     "mssql": "^6.2.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
@@ -37,7 +37,7 @@
     "@babel/preset-env": "7.9.6",
     "@babel/preset-react": "7.9.4",
     "babel-loader": "8.1.0",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.4",
     "css-loader": "3.5.3",
     "html-webpack-plugin": "4.3.0",
     "react": "16.13.1",
